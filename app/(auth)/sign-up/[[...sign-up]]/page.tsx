@@ -1,34 +1,23 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { SignUpPage, Testimonial } from "@/components/ui/sign-up";
 import { toast } from "sonner";
 
-const testimonials: Testimonial[] = [
-  {
-    avatarSrc: "https://unavatar.io/twitter/dhruvtwt_",
-    name: "Dhruv",
-    handle: "@dhruvtwt_",
-    text: "Removed my image background in seconds. The AI tools are incredibly fast and accurate."
-  },
-  {
-    avatarSrc: "https://unavatar.io/twitter/athrix_codes",
-    name: "Athrix",
-    handle: "@athrix_codes",
-    text: "Finally an editor that doesn't slow me down. The AI extend feature is a game changer."
-  },
-  {
-    avatarSrc: "https://unavatar.io/twitter/sahilcodex",
-    name: "Sahil",
-    handle: "@sahilcodex",
-    text: "Clean interface, powerful tools. Been using it for all my product photography."
-  },
-];
+const testimonials: Testimonial[] = [];
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const email = new URLSearchParams(window.location.search).get("email");
+    if (emailInputRef.current && email && !emailInputRef.current.value) {
+      emailInputRef.current.value = email.slice(0, 254);
+    }
+  }, []);
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +38,8 @@ const SignUp = () => {
         toast.success("Check your email for a verification link");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
       toast.error(message);
     }
   };
@@ -75,6 +65,7 @@ const SignUp = () => {
     <SignUpPage
       heroImageSrc="/signupbanner.jpg"
       testimonials={testimonials}
+      emailInputRef={emailInputRef}
       onSignUp={handleSignUp}
       onGoogleSignUp={handleGoogleSignUp}
       onSignIn={handleSignIn}

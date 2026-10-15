@@ -5,26 +5,7 @@ import { useRouter } from "next/navigation";
 import { SignInPage, Testimonial } from "@/components/ui/sign-in";
 import { toast } from "sonner";
 
-const testimonials: Testimonial[] = [
-  {
-    avatarSrc: "https://unavatar.io/twitter/dhruvtwt_",
-    name: "Dhruv",
-    handle: "@dhruvtwt_",
-    text: "Removed my image background in seconds. The AI tools are incredibly fast and accurate."
-  },
-  {
-    avatarSrc: "https://unavatar.io/twitter/athrix_codes",
-    name: "Athrix",
-    handle: "@athrix_codes",
-    text: "Finally an editor that doesn't slow me down. The AI extend feature is a game changer."
-  },
-  {
-    avatarSrc: "https://unavatar.io/twitter/sahilcodex",
-    name: "Sahil",
-    handle: "@sahilcodex",
-    text: "Clean interface, powerful tools. Been using it for all my product photography."
-  },
-];
+const testimonials: Testimonial[] = [];
 
 const SignIn = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
