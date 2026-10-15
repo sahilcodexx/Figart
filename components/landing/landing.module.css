@@ -1,0 +1,19 @@
+.theme {
+  --background: #fdfdfd;
+  --foreground: #424440;
+  --primary: #147bd0;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f1f1;
+  --secondary-foreground: #565852;
+  --muted: #f1f1f1;
+  --muted-foreground: #787a76;
+  --accent: #f0f6fa;
+  --accent-foreground: #424440;
+  --border: #e8e9e7;
+  --input: #e8e9e7;
+  --ring: #147bd0;
+  color-scheme: light;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-landing, Arial), Arial, Helvetica, sans-serif;
+}

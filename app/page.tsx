@@ -1,23 +1,32 @@
-import Container from "@/components/common/container";
-import { FeaturesSection } from "@/components/features-section";
-import HeroSection from "@/components/layouts/hero";
-import { MarqueeCard } from "@/components/ui/marquee.";
-import PricingCards from "@/components/ui/pricing-component";
-import { Stats } from "@/components/ui/stats-section";
+import { LandingLayout } from "@/components/landing/landing-layout";
+import { HeroSection } from "@/components/landing/hero-section";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { WorkflowsSection } from "@/components/landing/workflows-section";
+import { FaqSection } from "@/components/landing/faq-section";
+import { GetStartedSection } from "@/components/landing/get-started-section";
+import { StructuredData } from "@/components/site/structured-data";
+import { absoluteUrl } from "@/lib/site/config";
 
-const page = () => {
+export default function Page() {
   return (
-    <Container className="relative overflow-hidden ">
-      <div className="bg-primary/15 dark:bg-primary/10 absolute top-0 right-1/16 bottom-60 h-60 w-37.5 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"></div>
-      <div className="md:pt-40 py-20 md:py-40">
+    <>
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Figart",
+          url: absoluteUrl(),
+          description:
+            "A browser workspace for UI design, vector artwork, and editable interfaces.",
+        }}
+      />
+      <LandingLayout>
         <HeroSection />
-        <Stats />
         <FeaturesSection />
-        <PricingCards />
-        <MarqueeCard />
-      </div>
-    </Container>
+        <WorkflowsSection />
+        <FaqSection />
+        <GetStartedSection />
+      </LandingLayout>
+    </>
   );
-};
-
-export default page;
+}
