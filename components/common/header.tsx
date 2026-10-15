@@ -1,164 +1,101 @@
 "use client";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { ModeToggle } from "../theme-toggle";
-import { SignInButton, SignUpButton, useAuth, UserButton } from "@clerk/nextjs";
-import { Button } from "../ui/button";
-import { usePathname } from "next/navigation";
-import { useStoreUserEffect } from "@/hooks/use-storeuser-effect";
-import { BarLoader } from "react-spinners";
-import { Authenticated, Unauthenticated } from "convex/react";
-import { LayoutDashboard } from "lucide-react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
+import { Menu, X } from "lucide-react";
+import {
+  Brand,
+  LandingButton,
+  landingContainer,
+} from "@/components/landing/shared";
+import { cn } from "@/lib/utils";
+import { marketingPaths } from "@/lib/site/navigation";
+import styles from "@/components/landing/landing.module.css";
 
-const Header = () => {
-  const { theme } = useTheme();
+export default function Header() {
   const path = usePathname();
-  const { isLoading } = useStoreUserEffect();
   const { isSignedIn } = useAuth();
-
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 20) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  });
-
-  if (path.startsWith("/editor") || path.startsWith("/sign-in") || path.startsWith("/sign-up")) {
-    return null;
-  }
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  if (!marketingPaths.includes(path)) return null;
+  const links = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Explore", href: "/features" },
+    { label: "Templates", href: "/templates" },
+  ];
   return (
-    <header className="fixed top-0 z-50 flex w-full justify-center px-4 pt-2">
-      <motion.div
-        layout
-        transition={{
-          type: "spring",
-          stiffness: 380,
-          damping: 30,
-        }}
-        className={`flex items-center justify-between px-4 py-3 backdrop-blur-2xl transition-colors duration-300 ${
-          scrolled
-            ? "w-[90%] md:w-3/5 max-w-4xl rounded-2xl border border-neutral-300/80 bg-white/40 shadow-lg dark:border-neutral-600/40 dark:bg-neutral-900/60 md:px-7"
-            : "w-full max-w-7xl rounded-none border-transparent bg-transparent md:px-7"
-        }`}
-      >
-        <Link href={"/"} className="flex items-end text-xl md:text-2xl font-semibold">
-          <h2 className="h-full [font-family:var(--font-atma)]">Repimly</h2>
-        </Link>
-        {/* <div className="hidden md:flex">
-          <ul className="flex gap-4 text-sm">
-            <li>
-              <Link
-                href={"/#features"}
-                className="cursor-pointer transition-all duration-200 hover:text-neutral-500 dark:hover:text-neutral-400"
-              >
-                Feature
-              </Link>
-            </li>{" "}
-            <li>
-              <Link
-                href={"/pricing"}
-                className="cursor-pointer transition-all duration-200 hover:text-neutral-500 dark:hover:text-neutral-400"
-              >
-                Pricing
-              </Link>
-            </li>{" "}
-            <li>
-              <Link
-                href={"/pricing"}
-                className="cursor-pointer transition-all duration-200 hover:text-neutral-500 dark:hover:text-neutral-400"
-              >
-                Contact
-              </Link>
-            </li>{" "}
-          </ul>
-        </div> */}
-        <motion.div
-          layout
-          transition={{
-            layout: {
-              duration: 0.3,
-              ease: [0.22, 1, 0.36, 1],
-            },
-          }}
-          className="flex items-center gap-3"
-        >
-          <ModeToggle />
-
-          <Unauthenticated>
-            <div className="flex items-center gap-2">
-              <AnimatePresence mode="popLayout" initial={false}>
-                {scrolled ? (
-                  <motion.div
-                    key="scrolled-join"
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <SignUpButton>
-                      <Button size="sm">Join Now</Button>
-                    </SignUpButton>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="full-auth-buttons"
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center gap-2"
-                  >
-                    <SignInButton>
-                      <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-                        Sign In
-                      </Button>
-                    </SignInButton>
-                    <SignUpButton>
-                      <Button size="sm">Register</Button>
-                    </SignUpButton>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </Unauthenticated>
-
-          {isSignedIn && (
-            <motion.div layout>
-              <Link href={"/dashboard"}>
-                <Button variant={"default"} size="sm" className="hidden sm:inline-flex">
-                  <LayoutDashboard className="mr-2" size={16} />
-                  Dashboard
-                </Button>
-              </Link>
-            </motion.div>
-          )}
-
-          <Authenticated>
-            <motion.div layout className="flex items-center">
-              <UserButton />
-            </motion.div>
-          </Authenticated>
-        </motion.div>
-        {isLoading && (
-          <div className="fixed bottom-0 left-0 z-40 flex w-full justify-center">
-            <BarLoader
-              height="0.5px"
-              width="100%"
-              color={theme === "light" ? "#0a0a0a" : "#fafafa"}
-            />
-          </div>
+    <header
+      className={cn(
+        styles.theme,
+        "sticky top-0 z-40 border-b border-[#e9eae8] ",
+      )}
+    >
+      <div
+        className={cn(
+          landingContainer,
+          "flex h-15 items-center justify-between  gap-3 sm:gap-5",
         )}
-      </motion.div>
+      >
+        <Brand />
+        <nav
+          aria-label="Main navigation"
+          className="hidden items-center gap-14 text-[18px] text-[#777777] lg:flex"
+        >
+          {links.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              aria-current={path === link.href ? "page" : undefined}
+              className={`transition-colors hover:text-[#147bd0] ${path === link.href ? "text-[#147bd0]" : ""}`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="flex items-center gap-3 sm:gap-7">
+          <Link
+            href={isSignedIn ? "/dashboard" : "/sign-in"}
+            className="hidden text-[18px] text-[#777777] hover:text-[#147bd0] sm:block"
+          >
+            {isSignedIn ? "My workspace" : "Log In"}
+          </Link>
+          <LandingButton
+            href="/dashboard"
+            className="h-8 px-3 text-xs sm:h-[37px] sm:px-3.5 sm:text-[14px] [&_svg]:hidden sm:[&_svg]:block"
+          >
+            Get Started
+          </LandingButton>
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="rounded-md p-1.5 hover:bg-[#f1f1f1] lg:hidden"
+          >
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
+      </div>
+      {menuOpen && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="absolute inset-x-0 top-20 flex flex-col gap-1 border-b border-[#e9eae8] bg-[#fdfdfd] p-5 shadow-sm lg:hidden"
+        >
+          {[...links, { label: "Log In", href: "/sign-in" }].map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="rounded-md px-4 py-3 text-sm hover:bg-[#f1f1f1]"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      )}
     </header>
   );
-};
-
-export default Header;
+}

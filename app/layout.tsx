@@ -1,7 +1,9 @@
+import { absoluteUrl } from "@/lib/site/config";
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/components/design/design-fonts.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Atma, Inter } from "next/font/google";
+import { Atma, Inter, Roboto } from "next/font/google";
 import Header from "@/components/common/header";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClientProviders } from "./ClientProviders";
@@ -20,41 +22,52 @@ const atma = Atma({
   variable: "--font-atma",
 });
 
+const landingFont = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-landing",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Repimly - AI-Powered Image Editor",
-  description: "A modern AI-powered image editor with advanced editing tools, background removal, and creative AI features. Transform your images with cutting-edge technology.",
-  keywords: "AI image editor, photo editing, background removal, image enhancement, AI tools, photo manipulation, graphic design",
-  authors: [{
-    name: "Repimly Team",
-    url: "https://repimly.com"
-  }],
-  generator: "Next.js",
+  metadataBase: new URL(absoluteUrl()),
+  title: "Figart — Browser UI design & vector editor",
+  description:
+    "A browser-based design workspace for interfaces, vector artwork, and your next big idea. Create with an open canvas, familiar tools, and editable design files.",
+  keywords: [
+    "Figart",
+    "browser design tool",
+    "UI design",
+    "vector editor",
+    "design workspace",
+  ],
+  authors: [{ name: "Figart Team", url: absoluteUrl() }],
   robots: "index, follow",
+  icons: { icon: "/icon.svg", shortcut: "/icon.svg" },
   openGraph: {
-    title: "Repimly - AI-Powered Image Editor",
-    description: "Transform your images with AI-powered editing tools and creative features.",
+    title: "Figart — Browser UI design & vector editor",
+    description:
+      "Design interfaces, explore ideas, and create something your own. Right in your browser.",
     type: "website",
-    url: "https://repimly.com",
+    url: absoluteUrl(),
+    siteName: "Figart",
     images: [
       {
-        url: "/video.webp",
+        url: absoluteUrl("/figart-og.png"),
         width: 1200,
         height: 630,
-        alt: "Repimly AI Image Editor",
-        type: "image/webp"
-      }
+        alt: "Figart — Browser UI design and vector editor",
+      },
     ],
-    siteName: "Repimly"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Repimly - AI-Powered Image Editor",
-    description: "Transform your images with AI-powered editing tools and creative features.",
-    images: ["/video.webp"]
+    images: [absoluteUrl("/figart-og.png")],
+    title: "Figart — Browser UI design & vector editor",
+    description:
+      "An open canvas with familiar tools, built to keep you in flow.",
   },
-  alternates: {
-    canonical: "https://repimly.com"
-  }
+  alternates: { canonical: absoluteUrl() },
 };
 
 export default function RootLayout({
@@ -65,7 +78,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
       <ReactLenis root>
-        <body className={`${inter.className} ${atma.variable} antialiased `}>
+        <body
+          className={`${inter.className} ${atma.variable} ${landingFont.variable} antialiased `}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

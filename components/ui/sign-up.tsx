@@ -24,6 +24,7 @@ interface SignUpPageProps {
   description?: React.ReactNode;
   heroImageSrc?: string;
   testimonials?: Testimonial[];
+  emailInputRef?: React.Ref<HTMLInputElement>;
   onSignUp?: (event: React.FormEvent<HTMLFormElement>) => void;
   onGoogleSignUp?: () => void;
   onSignIn?: () => void;
@@ -48,10 +49,11 @@ const TestimonialCard = ({ testimonial, delay }: { testimonial: Testimonial, del
 
 export const SignUpPage: React.FC<SignUpPageProps> = ({
   title = <span className="font-light text-foreground tracking-tighter">Get Started</span>,
-  description = "Create your account and start editing with AI",
+  description = "Create your Figart account and save your design files.",
   heroImageSrc,
   testimonials = [],
   onSignUp,
+  emailInputRef,
   onGoogleSignUp,
   onSignIn,
 }) => {
@@ -82,7 +84,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
               <div className="animate-element animate-delay-350">
                 <label className="text-sm font-medium text-muted-foreground">Email Address</label>
                 <GlassInputWrapper>
-                  <input name="email" type="email" placeholder="Enter your email address" className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none" />
+                  <input ref={emailInputRef} name="email" type="email" placeholder="Enter your email address" className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none" />
                 </GlassInputWrapper>
               </div>
 

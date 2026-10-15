@@ -1,68 +1,105 @@
 "use client";
+
 import Link from "next/link";
-import Container from "./container";
-import { Button } from "../ui/button";
-import { Github, Twitter } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Github, Twitter } from "lucide-react";
+import { Brand, landingContainer } from "@/components/landing/shared";
+import { cn } from "@/lib/utils";
+import { footerColumns, marketingPaths } from "@/lib/site/navigation";
+import styles from "@/components/landing/landing.module.css";
 
-const Footer = () => {
+const footerLink =
+  "rounded-sm transition-colors hover:text-[#147bd0] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#147bd0]";
+
+export default function Footer() {
   const path = usePathname();
-
-  if (path?.startsWith("/editor")) {
-    return null;
-  }
-
+  if (!marketingPaths.includes(path)) return null;
   return (
-    <div className="pt-20">
-      <div className="h-[0.85px] bg-neutral-300/70 dark:bg-neutral-800"></div>
-      <Container className="pt-20 pb-0">
-        <div className="flex items-end justify-between pb-10">
-          <div className="flex flex-col gap-0.5">
-            <h2 className="[font-family:var(--font-atma)] text-xl font-semibold md:text-3xl">
-              Repimly
-            </h2>
-            <p className="text-xs text-wrap opacity-70">
-              © 2026 Repimly Inc. All rights reserved.
+    <footer className={cn(styles.theme, "overflow-hidden pt-8 sm:pt-12")}>
+      <div className={landingContainer}>
+        <div className="grid gap-x-10 gap-y-12 py-12 sm:py-16 lg:grid-cols-[minmax(200px,1.25fr)_repeat(4,minmax(0,1fr))] lg:gap-x-10">
+          <div className="lg:pr-4">
+            <Brand />
+            <p className="mt-4 max-w-[260px] text-sm leading-6 text-[#737570]">
+              A little space for your biggest ideas. Design, explore, and make
+              something worth sharing.
             </p>
-          </div>
-          <div className="flex flex-col items-end gap-2">
-            <div>
-              <Link href="https://twitter.com/sahilcodex" target="_blank">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="mr-2 rounded-2xl"
-                >
-                  <Twitter size={10} />
-                </Button>
+            <div className="mt-5 flex items-center gap-2">
+              <Link
+                href="https://github.com/sahilcodexx"
+                aria-label="Figart on GitHub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  footerLink,
+                  "flex size-9 items-center justify-center rounded-full border border-[#e4e6e3] text-[#62655f] hover:border-[#147bd0]/40",
+                )}
+              >
+                <Github className="size-4" />
               </Link>
-              <Link href="https://github.com/sahilcodexx" target="_blank">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="mr-2 rounded-2xl"
-                >
-                  <Github size={10} />
-                </Button>
+              <Link
+                href="https://twitter.com/sahilcodex"
+                aria-label="Figart on X / Twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  footerLink,
+                  "flex size-9 items-center justify-center rounded-full border border-[#e4e6e3] text-[#62655f] hover:border-[#147bd0]/40",
+                )}
+              >
+                <Twitter className="size-4" />
               </Link>
             </div>
-            <p className="text-sm text-end mr-3` md:mr-0 text-black/60 dark:text-white/60">
-              Made by
-              <Link href="" className="text-black dark:text-white">
-                {" "}
-                Sahilcodex
-              </Link>
-            </p>
+          </div>
+          <nav
+            aria-label="Footer"
+            className="grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-4 lg:col-span-4 lg:gap-x-10"
+          >
+            {footerColumns.map((column) => (
+              <div key={column.title}>
+                <h2 className="mb-4 text-[13px] leading-5 font-medium text-[#424440]">
+                  {column.title}
+                </h2>
+                <ul className="space-y-3 text-[13px] leading-5 text-[#737570]">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className={cn(footerLink, "inline-block py-0.5")}
+                        {...(link.href.startsWith("https")
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+        <div className="flex flex-col gap-4 border-t border-[#e8e9e7] py-6 text-xs leading-5 text-[#80827d] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Figart. A space to make.</p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/privacy" className={footerLink}>
+              Privacy
+            </Link>
+            <Link href="/help" className={footerLink}>
+              Help & support
+            </Link>
+            <Link href="/faq" className={footerLink}>
+              FAQs
+            </Link>
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <h2 className="bg-linear-to-b from-neutral-100 via-neutral-200 to-neutral-300 bg-clip-text text-8xl font-bold text-transparent md:text-[160px] dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-600">
-            Repimly
-          </h2>
+        <div
+          aria-hidden="true"
+          className="mt-14 -mb-[0.24em] bg-linear-to-b from-[#c8edf5] to-[#f3fafb] bg-clip-text text-center text-[clamp(112px,32vw,460px)] leading-[0.85] font-semibold tracking-tight text-transparent select-none sm:mt-20"
+        >
+          figart
         </div>
-      </Container>
-    </div>
+      </div>
+    </footer>
   );
-};
-
-export default Footer;
+}
