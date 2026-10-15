@@ -1,320 +1,180 @@
-# Repimly - AI-Powered Image Editor
+# Figart
 
-A modern, AI-powered image editing platform built with Next.js, Convex, and Fabric.js. Repimly provides an intuitive interface for creating and editing images with advanced AI features, all while maintaining a clean and responsive design.
+[Figart](https://figart.vercel.app) is a browser design workspace for interfaces,
+vector artwork, and visual ideas. It combines an SVG canvas, layers, properties,
+reusable design elements, and account-backed files with an editable demo that
+also appears on the landing page.
 
-## 🚀 Features
+Figart uses Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS v4,
+shadcn/ui with Radix, lucide-react, Clerk, Convex, and next-themes.
 
-### Core Features
-- **AI-Powered Editing**: Advanced AI tools for image enhancement, background removal, and intelligent image extension
-- **Real-time Collaboration**: Cloud-based project storage with automatic saving
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Dark Mode**: Built-in theme switching for comfortable viewing
-- **Project Management**: Create, organize, and manage multiple image projects
+## Getting started
 
-### AI Tools
-- **AI Retouch**: Enhance image quality with AI-powered improvements
-- **AI Upscale**: Increase resolution up to 16MP
-- **Background Removal**: Remove backgrounds with AI precision
-- **AI Image Extender**: Extend image boundaries intelligently
-- **Smart Filters**: Apply AI-powered filters and adjustments
+Install dependencies from the lockfile:
 
-### Manual Editing Tools
-- **Resize**: Change canvas dimensions with aspect ratio locking
-- **Crop**: Crop images with multiple aspect ratio presets
-- **Adjust**: Fine-tune brightness, contrast, saturation, and vibrance
-- **Text Tool**: Add and customize text with various fonts and styles
-- **Background Controls**: Change or remove backgrounds with color or image options
-
-## 📁 Project Structure
-
-```
-├── app/                          # Next.js App Router
-│   ├── (auth)/                  # Authentication pages
-│   │   ├── sign-in/           # Sign in page
-│   │   └── sign-up/           # Sign up page
-│   ├── (main)/                 # Main application routes
-│   │   ├── dashboard/         # User dashboard
-│   │   └── editor/            # Image editor
-│   └── globals.css             # Global styles
-├── components/                  # Reusable UI components
-│   ├── common/                 # Common layout components
-│   ├── ui/                     # Reusable UI elements
-│   └── features-section.tsx    # Features section component
-├── convex/                      # Database schema and functions
-│   ├── auth.config.ts          # Authentication configuration
-│   ├── project.ts              # Project database functions
-│   ├── schema.ts               # Database schema definition
-│   └── users.ts                # User database functions
-├── hooks/                       # Custom React hooks
-│   ├── use-convex-query.tsx   # Convex query hook
-│   └── use-plan-access.ts     # Plan access control hook
-├── lib/                         # Utility functions
-│   ├── schema.ts               # Type definitions
-│   └── utils.ts                # Helper functions
-├── context/                     # React context providers
-│   └── context.tsx             # Canvas context
-├── public/                      # Static assets
-└── utils/                       # Additional utilities
+```sh
+npm ci
 ```
 
-## 🛠️ Tech Stack
+Use a Node.js version supported by the installed Next.js version that also
+supports running TypeScript imports in Node's test runner. The test command
+loads `.ts` files directly without a separate transpiler.
 
-### Frontend
-- **Next.js 16.1.5**: React framework with App Router
-- **React 19.2.3**: UI library
-- **Tailwind CSS**: Utility-first CSS framework
-- **Radix UI**: Accessible component primitives
-- **Framer Motion**: Animation library
-- **Lucide React**: Icon library
-- **React Colorful**: Color picker component
+Configure `.env.local` with your own Clerk and Convex application settings:
 
-### Backend & Database
-- **Convex**: Real-time database and backend
-- **Clerk**: Authentication and user management
-- **ImageKit**: Image storage and transformation
-
-### Image Processing
-- **Fabric.js**: Canvas manipulation and image editing
-- **React Dropzone**: File upload functionality
-
-### Development Tools
-- **ESLint**: Code linting
-- **TypeScript**: Type safety
-- **PostCSS**: CSS processing
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18 or higher
-- npm, yarn, pnpm, or bun package manager
-- ImageKit account (for image storage)
-- Clerk account (for authentication)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Image-Editor-AI-main
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   # or
-   bun install
-   ```
-
-3. **Set up environment variables**
-   Create a `.env.local` file in the root directory:
-   ```
-   NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
-   NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
-   NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
-   
-   # Clerk configuration
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-   CLERK_SECRET_KEY=your_clerk_secret_key
-   
-   # Convex configuration
-   CONVEX_URL=your_convex_url
-   CONVEX_DEPLOYMENT=your_convex_deployment
-   ```
-
-4. **Start the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   # or
-   bun dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🔧 Configuration
-
-### ImageKit Setup
-1. Create an account at [ImageKit.io](https://imagekit.io/)
-2. Create a new folder for your images
-3. Copy the URL endpoint and public key
-4. Add them to your `.env.local` file
-
-### Clerk Setup
-1. Create an account at [Clerk.dev](https://clerk.dev/)
-2. Create a new application
-3. Copy the publishable and secret keys
-4. Add them to your `.env.local` file
-
-### Unsplash Integration
-1. Create an account at [Unsplash.com](https://unsplash.com/)
-2. Create a new application
-3. Copy the access key
-4. Add it to your `.env.local` file
-
-## 🎯 Usage Guide
-
-### User Authentication
-1. Click "Sign In" on the homepage
-2. Choose your preferred authentication method (email, Google, etc.)
-3. Complete the sign-in process
-4. You'll be redirected to your dashboard
-
-### Creating a New Project
-1. Navigate to the dashboard
-2. Click "Create Project"
-3. Choose an image to upload or start with a blank canvas
-4. Select your desired canvas dimensions
-5. Click "Create" to start editing
-
-### Using the Editor
-
-#### Toolbar
-- **Resize**: Change canvas dimensions
-- **Crop**: Crop your image with aspect ratio presets
-- **Adjust**: Fine-tune image properties
-- **Background**: Remove or change background
-- **AI Tools**: Access AI-powered features
-- **Text**: Add and customize text
-
-#### AI Tools
-- **AI Retouch**: Enhance image quality
-- **AI Upscale**: Increase resolution
-- **Background Removal**: Remove backgrounds
-- **AI Image Extender**: Extend image boundaries
-
-#### Manual Adjustments
-- **Brightness**: Adjust image brightness (-100 to 100)
-- **Contrast**: Adjust image contrast (-100 to 100)
-- **Saturation**: Adjust color saturation (-100 to 100)
-- **Vibrance**: Adjust vibrance (-100 to 100)
-
-### Saving and Exporting
-1. Changes are automatically saved to the cloud
-2. Use the save button to manually save
-3. Export your final image in various formats
-
-## 📊 Database Schema
-
-The application uses Convex for real-time database management with the following schema:
-
-### Users Table
-- `name`: User's name (string)
-- `email`: User's email (string)
-- `tokenIdentifier`: Authentication token (string)
-- `imageUrl`: Profile image URL (optional string)
-- `plan`: Subscription plan ("free" | "pro")
-- `projectUsed`: Number of projects used (number)
-- `exportProjectThisMonth`: Monthly export count (number)
-- `createdAt`: Account creation timestamp (number)
-- `lastActive`: Last active timestamp (number)
-
-### Projects Table
-- `title`: Project title (string)
-- `userId`: Reference to user ID (string)
-- `canvasState`: Canvas state data (any)
-- `width`: Canvas width (number)
-- `height`: Canvas height (number)
-- `originalImageUrl`: Original image URL (optional string)
-- `currentImageUrl`: Current image URL (optional string)
-- `thumbnailUrl`: Thumbnail image URL (optional string)
-- `activeTransformation`: Active ImageKit transformation (optional string)
-- `backgroundRemove`: Background removal status (optional boolean)
-- `folderId`: Folder reference (optional string)
-- `createdAt`: Project creation timestamp (number)
-- `updatedAt`: Last update timestamp (number)
-
-## 🔧 Development
-
-### Available Scripts
-
-```bash
-npm run dev        # Start development server
-npm run build      # Build for production
-npm run start      # Start production server
-npm run lint       # Run ESLint
+```dotenv
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
+NEXT_PUBLIC_SITE_URL=https://figart.vercel.app
 ```
 
-### Code Organization
+Configure `CLERK_JWT_ISSUER_DOMAIN` in the Convex deployment and set up Clerk's
+`convex` JWT template to match the `applicationID` in `convex/auth.config.ts`.
+Account files require the schema and functions in `convex/` to be provisioned
+in that deployment. See the [backend documentation](convex/README.md).
 
-- **Components**: Reusable UI components in `components/`
-- **Pages**: Next.js pages in `app/`
-- **Hooks**: Custom React hooks in `hooks/`
-- **Context**: React context providers in `context/`
-- **Database**: Convex functions in `convex/`
-- **Utilities**: Helper functions in `lib/` and `utils/`
+Guest editing does not require signing in, but the application still mounts
+Clerk and Convex providers and needs valid provider configuration.
 
-### Adding New Features
+```sh
+npm run dev
+```
 
-1. Create components in the appropriate directory
-2. Add database functions to `convex/` if needed
-3. Update types in `utils/types.ts`
-4. Add new routes in `app/` if needed
-5. Test thoroughly before deployment
+Open `http://localhost:3000`. Use `/editor/demo` to explore the starter or
+`/start` to create a local file. Sign in at `/dashboard` to manage account files.
+The dev and build scripts use webpack. Avoid running a production build and the
+dev server together on this machine.
 
-## 🐳 Deployment
+## Pages and file modes
 
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Configure environment variables in Vercel dashboard
-4. Deploy automatically on push to main branch
+| Route                                                     | Purpose                                                                                      |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `/`                                                       | Landing page with an editable-design preview, features, workflows, FAQ, and get-started form |
+| `/dashboard`                                              | Account file browser; guests can browse resources and open the demo                          |
+| `/editor/demo`                                            | Editable Elsewhere demo saved in this browser                                                |
+| `/editor/local-*`                                         | A document already stored in this browser                                                    |
+| `/editor/cloud-*`                                         | An authenticated, owner-checked Convex document                                              |
+| `/start`                                                  | Create or import a local design without signing in                                           |
+| `/files`                                                  | Search and download validated browser documents                                              |
+| `/features`, `/use-cases`, `/guides`                      | Product, use-case, and learning hubs                                                         |
+| `/features/[slug]`, `/use-cases/[slug]`, `/guides/[slug]` | Statically generated articles defined in the site catalog                                    |
+| `/templates`, `/tools`                                    | Editable starters and an overview of available tools                                         |
+| `/faq`, `/help`, `/about`, `/privacy`                     | Searchable answers, support information, project background, and data information            |
+| `/sign-in`, `/sign-up`                                    | Clerk account entry points                                                                   |
 
-### Manual Deployment
-1. Build the application: `npm run build`
-2. Start the production server: `npm run start`
-3. Configure your web server (nginx, apache, etc.)
-4. Set up SSL certificates
-5. Configure environment variables
+The public site uses a sticky header, shared footer, page metadata, and related
+links. Canonical URLs, the sitemap, robots configuration, and social metadata use
+`https://figart.vercel.app` by default. Override `NEXT_PUBLIC_SITE_URL` to change
+the origin. Private workspace and authentication pages are marked noindex;
+`/files` is also excluded from the sitemap.
 
-## 🔒 Security
+## Editor and dashboard
 
-- **Authentication**: Clerk provides secure authentication
-- **Data Protection**: Convex handles data encryption
-- **Environment Variables**: Sensitive data stored securely
-- **Input Validation**: Server-side validation for all inputs
+- Frames, rectangles, ellipses, lines, text, raster images, and Bézier paths.
+- Pages, nested layers, grouping, ordering, visibility, locking, and renaming.
+- Position, dimensions, rotation, fills, strokes, opacity, corners, shadows,
+  typography, and alignment controls.
+- Horizontal and vertical auto layout with gap and padding.
+- Local components, snapshot instances, detachment, and color swatches.
+- Undo/redo, clipboard operations, duplication, nudge, pan, zoom, and grid snapping.
+- Basic prototype links and presentation, plus CSS property inspection.
+- SVG and PNG export and editable `.figart` JSON import/export.
+- Account file search, sorting, grid/list views, favorites, duplicate, rename,
+  trash, restore, and permanent deletion.
 
-## 🤝 Contributing
+The dashboard opens navigation in a drawer below 768px. Below 1024px, the editor
+uses separate layers and properties drawers, a persistent mobile header, and a
+wrapping toolbar. Desktop panel visibility is stored separately while resizing.
+The drawers use Radix dialogs with focus trapping and Escape dismissal.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+### Useful controls
 
-### Code Style
-- Use TypeScript for type safety
-- Follow Prettier formatting
-- Use ESLint for code quality
-- Write descriptive commit messages
+| Action                                 | Control                             |
+| -------------------------------------- | ----------------------------------- |
+| Move, frame, rectangle, ellipse, text  | `V`, `F`, `R`, `O`, `T`             |
+| Pen, hand                              | `P`, `H`                            |
+| Temporary pan                          | Hold Space and drag                 |
+| Pan / zoom                             | Scroll / Ctrl or Cmd + scroll       |
+| Fit page / fit selection / actual size | Shift+1 / Shift+2 / `0`             |
+| Duplicate while moving                 | Alt + drag                          |
+| Constrain movement / cancel a drag     | Shift + drag / Escape               |
+| Undo / redo                            | Ctrl or Cmd+Z / Ctrl or Cmd+Shift+Z |
+| Group / ungroup                        | Ctrl or Cmd+G / Ctrl or Cmd+Shift+G |
+| Toggle desktop sidebars / layers       | Tab / Shift+Tab                     |
 
-## 📄 License
+The pen places anchors: click for corners, drag for Bézier handles, and click
+the first anchor to close a path. Enter or Escape ends the current pen operation.
+Double-click a Bézier path to edit anchors and handles; Alt-drag splits handles.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Saving and compatibility
 
-## 🙏 Acknowledgments
+Account documents save to Convex with an owner check and an expected revision.
+The editor keeps a browser backup; failed saves remain errors and retain recovery
+data. An older tab cannot silently overwrite a newer document revision.
 
-- [Next.js](https://nextjs.org/) - React framework
-- [Convex](https://convex.dev/) - Real-time database
-- [Fabric.js](https://fabricjs.com/) - Canvas manipulation
-- [ImageKit](https://imagekit.io/) - Image processing
-- [Clerk](https://clerk.dev/) - Authentication
-- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
+Local files and the demo save only in the current browser. Download an editable
+backup before clearing browser data or switching devices. Browser recovery files
+can be copied to an account from the dashboard. Public starter-copy actions save
+a browser copy before attempting account creation.
 
-## 📞 Support
+Existing `.repimly` files remain importable. The internal document identifier
+`repimly-design`, storage key `repimly-design-files-v1`, and storage event
+`repimly-files` are retained for compatibility; the public brand and new download
+extension are Figart. The current demo has its own versioned storage identity so
+older demo documents are not overwritten.
 
-For support and questions:
-- Create an issue on GitHub
-- Check the documentation
-- Review the codebase for implementation details
+Cloud documents are limited to 900,000 serialized UTF-8 bytes. The editor accepts
+individual embedded account images up to 350,000 bytes. Document validation also
+checks geometry, supported fields, node identities, and hierarchy integrity.
 
----
+## Limitations
 
-**Built with ❤️ using modern web technologies**
+Figart does not yet provide full Figma or FigCraft parity. Boolean geometry,
+advanced constraints, variants, bound variables, live collaboration, comments,
+plugins, advanced prototype transitions, and native `.fig` import are not
+implemented. Instances are snapshots and do not automatically inherit later
+changes from their source component. Selection bounds and alignment use
+axis-aligned geometry. Touch layouts are supported; a mouse or trackpad remains
+useful for precise vector editing.
+
+## Project structure
+
+| Location                        | Responsibility                                                                                      |
+| ------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `app/page.tsx`                  | Composes the landing sections and website structured data                                           |
+| `components/landing/`           | Separate hero, features, workflows, FAQ, and get-started sections; shared layout and demo previews  |
+| `components/common/`            | Public header and footer                                                                            |
+| `components/site/`, `lib/site/` | Marketing pages, article catalog, navigation, metadata, and canonical origin                        |
+| `components/design/`            | Dashboard, editor, SVG canvas, toolbar, panels, responsive drawers, dialogs, and editing hook       |
+| `lib/design/`                   | Document model, hierarchy, layout, vector helpers, frame queue, storage, file creation, and starter |
+| `convex/`                       | Schema, authentication configuration, and owner-checked queries/mutations                           |
+| `tests/`                        | Node tests for document invariants, persistence, interactions, and site routes                      |
+| `public/demo/`, `public/fonts/` | Demo photographs and local display font                                                             |
+| `licenses/`                     | Attribution and third-party license notices                                                         |
+
+Keep workspace theme variables scoped to `WorkspaceTheme`. Landing styles live
+in `components/landing/landing.module.css`. Tailwind v4 and existing shadcn
+components handle layout and controls; SVG attributes and runtime inline styles
+handle editable geometry.
+
+## Validation
+
+```sh
+npm run typecheck
+npm run test:design
+npm run build
+```
+
+Run targeted ESLint checks on changed TypeScript files. Check the running UI at
+phone, tablet, and desktop widths, including drawer dismissal, canvas controls,
+file operations, and save recovery. Run expensive checks sequentially and avoid
+starting duplicate dev servers. A Markdown-only change does not require a build.
+The Node tests do not deploy functions or modify remote account data.
+
+## Attribution
+
+Figart adapts interface ideas and workflows from FigCraft into React/TypeScript;
+it does not execute the Rust/egui runtime. See [FigCraft attribution](licenses/NOTICE.md)
+and [demo asset credits](licenses/demo-assets.md). The former image editor,
+image backend, AI tools, and batch studio are no longer part of this application.

@@ -1,124 +1,109 @@
-# Repimly — AI-Powered Image Editor
+# Figart — Browser Design Workspace
 
-## Overview
-A web-based image editor built with Next.js, Convex (backend), Clerk (auth), and Fabric.js (canvas). Users upload images, edit them with AI-powered tools (background removal, AI extender, AI edit) and manual tools (crop, resize, adjust, text, shapes, layers), then export.
+## Product and scope
 
-## Tech Stack
-- **Framework:** Next.js 16 (Turbopack)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4 (CSS-based config in `app/globals.css`)
-- **UI Library:** shadcn/ui (custom components in `components/ui/`)
-- **Backend/Database:** Convex (realtime, schema in `convex/schema.ts`)
-- **Auth:** Clerk (`@clerk/nextjs`) + Convex JWT auth (`convex/auth.config.ts`)
-- **Canvas:** Fabric.js v7 (`fabric`)
-- **Animations:** framer-motion, motion
-- **Image Hosting:** ImageKit (`imagekit`)
-- **Icons:** lucide-react
-- **Font:** Geist (via `next/font/google`)
-- **Theme:** next-themes (light/dark mode)
-- **Linting:** ESLint
-- **Formatting:** Prettier + `prettier-plugin-tailwindcss`
+Figart is a browser workspace for UI design, vector artwork, and editable design
+files. The public origin is `https://figart.vercel.app`, configurable through
+`NEXT_PUBLIC_SITE_URL` in `lib/site/config.ts`.
 
-## Project Structure
+The landing page has been redesigned and split into section components. Keep its
+current design, large gradient footer wordmark, and sticky navigation unless the
+owner requests changes. Do not restore the removed image editor, image backend,
+AI image tools, batch studio, or project-limit system.
+
+FigCraft's Rust/egui code is an interface reference, not the runtime. Preserve its
+MIT notice under `licenses/`. Do not ship ArtCraft logos or reference screenshots.
+Do not describe unsupported Figma features as implemented.
+
+## Stack
+
+Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS v4, shadcn/ui
+with Radix, lucide-react, Convex, Clerk, and next-themes. Use the existing
+components and dependencies before introducing another library.
+
+## Structure
+
+- `app/page.tsx` composes the landing sections and website structured data.
+- `components/landing/` contains separate hero, features, workflows, FAQ, and
+  get-started sections, shared layout, scoped styles, and product previews.
+- `components/common/` contains the public header and footer.
+- `components/site/` and `lib/site/` contain public pages, article content,
+  navigation, metadata, and site configuration.
+- `components/design/` contains the dashboard, editor, SVG canvas, panels,
+  toolbar, dialogs, responsive panel helper, and `useDesignEditor`.
+- `lib/design/` contains the document format, hierarchy, layout, vectors,
+  storage, gesture scheduling, creation helpers, and Elsewhere starter.
+- `convex/designs.ts` contains owner-checked file queries and mutations.
+- `tests/` uses Node's test runner; no third-party test framework is installed.
+
+## Routes and storage
+
+- `/dashboard` is public, with authenticated account file operations and guest
+  resource/demo entry points. Guest local-file creation lives at `/start`.
+- `/files` lists browser documents. `/editor/local-*` opens those browser files.
+- `/editor/demo` uses the versioned Elsewhere demo slot. Do not overwrite older
+  demo slots or user edits when updating the starter.
+- `/editor/cloud-*` opens owner-checked Convex files and requires authentication.
+- Marketing articles are generated from `lib/site/catalog.ts`; keep route
+  generation, navigation, related links, canonical metadata, and sitemap aligned.
+
+New editable downloads use `.figart`; imports also accept legacy `.repimly`.
+Keep `repimly-design`, `repimly-design-files-v1`, and `repimly-files` compatible
+unless a deliberate migration is requested and implemented. These are persisted
+identifiers, not public branding.
+
+## Implementation conventions
+
+Compose pages from focused components instead of growing a single page module.
+Use Tailwind v4 and existing shadcn components. Keep editor light/dark variables
+inside `WorkspaceTheme`; do not change landing or global tokens to style the
+workspace. Use inline styles for runtime geometry and tokens. Add explanatory
+comments only when needed to explain non-obvious behavior.
+
+The dashboard uses navigation drawers below 768px; the editor uses panel drawers
+below 1024px. Keep the canvas, toolbar, dialogs, file actions, and navigation usable
+at narrow widths. Preserve desktop panel preferences when resizing. Use Radix for
+modal focus management and respect keyboard navigation inside dialogs and menus.
+
+Document changes go through `useDesignEditor`, with one undo entry per gesture.
+Keep pointer updates coalesced per frame. Avoid document serialization, full
+workspace updates, or database writes on every pointer movement. Retain anchored,
+bounded zoom and the grab/grabbing cursor behavior.
+
+Validate imported and stored documents. Keep hierarchy cycle-free and identity
+references valid. Account documents have a 900,000-byte serialized UTF-8 limit;
+individual account images accepted by the editor are limited to 350,000 bytes.
+
+Every cloud access must check ownership. Saves must respect expected revisions.
+Preserve browser backups and recovery paths on failures; never report a failed
+save as successful. Local-only work must not silently become account data.
+
+## Validation and machine load
+
+For code changes, run checks appropriate to the affected behavior:
+
+```sh
+npm run typecheck
+npm run test:design
+npm run build
 ```
-app/
-  (auth)/              # Sign-in, sign-up pages
-  (main)/
-    dashboard/         # Project listing, create project
-    editor/            # Editor page
-      [projectid]/
-        page.tsx       # Main editor page with CanvasContext provider
-      _components/
-        canvas-editor.tsx       # Fabric.js canvas wrapper
-        canvas-context-menu.tsx # Right-click context menu
-        editor-sidebar.tsx      # Left sidebar with tool panels
-        editor-topbar.tsx       # Top toolbar with tools, undo/redo, save, export
-        grid-overlay.tsx        # Grid snap hook + utility
-        zoom-controls.tsx       # Zoom slider + fit-to-screen
-        use-keyboard-shortcuts.ts  # ⌘Z, ⌘S, Delete, etc.
-        tools/
-          Adjust.tsx             # Brightness, contrast, filters
-          Crop.tsx               # Crop controls
-          Resize.tsx             # Resize dimensions
-          background-controls.tsx # AI background removal/replace
-          text-control.tsx       # Add/edit text
-          shape-controls.tsx     # Rectangle, circle, line, arrow, etc.
-          layer-panel.tsx        # Layer visibility, lock, reorder
-          ai-extender-controls.tsx # AI image extender
-          ai-edit.tsx            # AI image enhancement
-components/
-  ui/                  # shadcn components (button, card, dialog, etc.)
-  common/              # header, footer, upgrade-modal, etc.
-  theme-toggle.tsx     # Light/dark mode toggle
-context/
-  context.tsx          # CanvasContext — shared canvas state
-convex/
-  schema.ts            # Database schema (users, project, folder)
-  auth.config.ts       # Clerk JWT auth config
-  users.ts             # User queries/mutations
-  project.ts           # Project CRUD queries/mutations
-hooks/
-  use-convex-query.tsx # Wrappers around Convex useQuery/useMutation
-  use-plan-access.ts   # Plan gating (free vs pro)
-```
 
-## Key Conventions
+Use targeted ESLint on changed workspace files. Verify important editing flows
+in the running browser and inspect phone, tablet, and desktop layouts. State
+which checks were completed and which were unavailable. Documentation-only
+changes need content, path, and link checks rather than an application build.
 
-### Code Style
-- No comments in code unless necessary
-- Use existing patterns (look at neighboring files before writing new code)
-- Use shadcn components where possible (import from `@/components/ui/`)
-- Theme tokens: `bg-background`, `text-foreground`, `border-border`, `bg-muted`, `text-muted-foreground`, `bg-card`, `bg-primary`, `text-primary`, `bg-destructive`, `text-destructive`
-- Border radius uses shadcn scale: `rounded-sm` (6px), `rounded-md` (8px), `rounded-lg` (10px), `rounded-xl` (14px)
+The owner has reported CPU spikes and machine crashes. Reuse an existing dev
+server, run expensive checks sequentially, and avoid simultaneous builds and dev
+servers. Do not run repeated full builds without a reason.
 
-### CanvasContext (`context/context.tsx`)
-Provides: `canvasEditor`, `setCanvasEditor`, `activeTool`, `onToolChange`, `history`, `historyIndex`, `canUndo`, `canRedo`, `undo`, `redo`, `reset`, `saveState`, `isSaving`, `showGrid`, `setShowGrid`, `processingMessage`, `setProcessingMessage`
+Never deploy, delete, or modify existing remote data merely to test local code.
+Use the local Node backend tests for ownership and revision checks. Backend
+provisioning and production deployment are separate from local verification.
 
-### Tools System
-- Tools are defined in `editor-topbar.tsx` with `id`, `label`, `icon`, `proOnly?`
-- Each tool's panel renders in `editor-sidebar.tsx` via `renderToolConfig()`
-- Types: `ToolId` in `utils/types.ts` — `resize | crop | adjust | text | background | ai_extender | ai_edit | layers | shapes`
-- All tools are free except: `background`, `ai_extender`, `ai_edit` (Pro only)
-- Layers and Shapes were recently added as free tools
+## Documentation and attribution
 
-### Plan System (`hooks/use-plan-access.ts`)
-- `hasAccess(toolId)` — checks if tool is available
-- `canCreateProject(count)` — free users limited to 3 projects
-- `canExport(count)` — free users limited to 20 exports/month
-
-### Auto-save
-- History-based undo/redo system in `page.tsx`
-- `saveState()` snapshots canvas JSON into history array
-- Debounced auto-save (2s) writes to Convex via `updateProject`
-- `lastSavedRef` skips saves when state hasn't changed
-
-### Fabric.js Canvas
-- Canvas initialized in `canvas-editor.tsx` using `new Canvas()`
-- Custom selection nubs: circle style, primary color, size 8
-- Objects snap to 20px grid when grid is enabled
-- `useGridSnap()` hook for snap-to-grid logic
-
-## Environment Variables
-Keys are in `.env` and `.env.local`. See those files for current values.
-- `NEXT_PUBLIC_CONVEX_URL` — Convex deployment URL
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` — Clerk auth
-- `CLERK_JWT_ISSUER_DOMAIN` — Clerk JWT issuer for Convex
-- `NEXT_PUBLIC_CONVEX_SITE_URL` — Convex site URL
-- `NEXT_PUBLIC_IMAGE_PUBLIC_KEY`, `IMAGEKIT_PRIVATE_KEY` — ImageKit
-- `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` — ImageKit URL endpoint
-- `CONVEX_DEPLOY_KEY` — Convex deploy key
-- `NEXT_PUBLIC_UNSPLASH_ACCESS_KEY` — Unsplash API key
-
-## Running Locally
-```bash
-npm run dev       # Next.js dev server (Turbopack)
-npx convex dev    # Convex dev server (runs functions locally)
-```
-No typecheck script exists. Use `npx tsc --noEmit` to typecheck.
-
-## Important Notes
-- No testing framework installed
-- reactStrictMode is disabled
-- `framer-motion` and `motion` packages are both installed (prefer `motion` for new code)
-- Convex deployment: `loyal-lyrebird-253` (eu-west-1)
-- ImageKit is used for image uploads/hosting
+Keep `README.md` and `convex/README.md` aligned with actual routes, supported
+features, and save behavior. Update owned attribution prose when appropriate,
+but preserve third-party copyright and license texts. Do not expose environment
+secrets or put account-specific credentials into documentation.
