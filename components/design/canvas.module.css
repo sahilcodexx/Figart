@@ -1,0 +1,4 @@
+.surface[data-tool-cursor] svg,
+.surface[data-tool-cursor] svg * {
+  cursor: var(--design-cursor) !important;
+}
