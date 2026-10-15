@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  turbopack: { root: path.resolve(__dirname) },
   experimental: {
     workerThreads: false,
     cpus: 1,
