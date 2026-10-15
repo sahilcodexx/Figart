@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DesignDocument, normalizeDocument, Tool } from "@/lib/design/document";
 import {
+  type PanelVisibility,
   type ZoomChange,
   defaultPanels,
   togglePanels,
@@ -92,8 +93,9 @@ export function DesignWorkspace({
     "saved" | "saving" | "error" | "unsaved"
   >("saved");
   const compact = useCompactWorkspace();
-  const [desktopPanels, setDesktopPanels] = useState(defaultPanels);
-  const [mobilePanels, setMobilePanels] = useState({
+  const [desktopPanels, setDesktopPanels] =
+    useState<PanelVisibility>(defaultPanels);
+  const [mobilePanels, setMobilePanels] = useState<PanelVisibility>({
     left: false,
     right: false,
   });

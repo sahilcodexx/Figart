@@ -1,7 +1,7 @@
 export type PanelVisibility = {
   left: boolean;
   right: boolean;
-  restore: { left: boolean; right: boolean };
+  restore?: { left: boolean; right: boolean };
 };
 export const defaultPanels: PanelVisibility = {
   left: true,
@@ -9,6 +9,7 @@ export const defaultPanels: PanelVisibility = {
   restore: { left: true, right: true },
 };
 export function togglePanels(state: PanelVisibility): PanelVisibility {
+  const restore = state.restore ?? { left: true, right: true };
   return state.left || state.right
     ? {
         left: false,
@@ -17,8 +18,8 @@ export function togglePanels(state: PanelVisibility): PanelVisibility {
       }
     : {
         ...state,
-        ...(state.restore.left || state.restore.right
-          ? state.restore
+        ...(restore.left || restore.right
+          ? restore
           : { left: true, right: true }),
       };
 }
