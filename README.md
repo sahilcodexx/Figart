@@ -6,7 +6,7 @@ reusable design elements, and account-backed files with an editable demo that
 also appears on the landing page.
 
 Figart uses Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS v4,
-shadcn/ui with Radix, lucide-react, Clerk, Convex, and next-themes.
+shadcn/ui with Radix, lucide-react, Clerk, Convex, next-themes, and GSAP.
 
 ## Getting started
 
@@ -48,26 +48,55 @@ dev server together on this machine.
 
 ## Pages and file modes
 
-| Route                                                     | Purpose                                                                                      |
-| --------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `/`                                                       | Landing page with an editable-design preview, features, workflows, FAQ, and get-started form |
-| `/dashboard`                                              | Account file browser; guests can browse resources and open the demo                          |
-| `/editor/demo`                                            | Editable Elsewhere demo saved in this browser                                                |
-| `/editor/local-*`                                         | A document already stored in this browser                                                    |
-| `/editor/cloud-*`                                         | An authenticated, owner-checked Convex document                                              |
-| `/start`                                                  | Create or import a local design without signing in                                           |
-| `/files`                                                  | Search and download validated browser documents                                              |
-| `/features`, `/use-cases`, `/guides`                      | Product, use-case, and learning hubs                                                         |
-| `/features/[slug]`, `/use-cases/[slug]`, `/guides/[slug]` | Statically generated articles defined in the site catalog                                    |
-| `/templates`, `/tools`                                    | Editable starters and an overview of available tools                                         |
-| `/faq`, `/help`, `/about`, `/privacy`                     | Searchable answers, support information, project background, and data information            |
-| `/sign-in`, `/sign-up`                                    | Clerk account entry points                                                                   |
+| Route                                                     | Purpose                                                                                                                                      |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                                       | Landing page with an editable-design preview, features, starter showcase, workflows, local/account saving options, FAQ, and get-started form |
+| `/dashboard`                                              | Account file browser; guests can browse resources and open the demo                                                                          |
+| `/editor/demo`                                            | Editable Elsewhere demo saved in this browser                                                                                                |
+| `/editor/local-*`                                         | A document already stored in this browser                                                                                                    |
+| `/editor/cloud-*`                                         | An authenticated, owner-checked Convex document                                                                                              |
+| `/start`                                                  | Create or import a local design without signing in                                                                                           |
+| `/files`                                                  | Search and download validated browser documents                                                                                              |
+| `/features`, `/use-cases`, `/guides`                      | Product, use-case, and learning hubs                                                                                                         |
+| `/features/[slug]`, `/use-cases/[slug]`, `/guides/[slug]` | Statically generated articles defined in the site catalog                                                                                    |
+| `/templates`, `/tools`                                    | Editable starters and an overview of available tools                                                                                         |
+| `/faq`, `/help`, `/about`, `/privacy`                     | Searchable answers, support information, project background, and data information                                                            |
+| `/sign-in`, `/sign-up`                                    | Clerk account entry points                                                                                                                   |
 
 The public site uses a sticky header, shared footer, page metadata, and related
 links. Canonical URLs, the sitemap, robots configuration, and social metadata use
 `https://figart.vercel.app` by default. Override `NEXT_PUBLIC_SITE_URL` to change
 the origin. Private workspace and authentication pages are marked noindex;
 `/files` is also excluded from the sitemap.
+
+## Scroll-driven hero
+
+The landing hero starts as a full-width design scene, then contracts into a
+rounded editor-preview card as you scroll. `hero-section.tsx` provides the
+server-rendered copy and artwork; `scroll-hero.tsx` loads GSAP and ScrollTrigger
+on the client. A single scrubbed timeline controls the scene, headline, and preview. CSS sticky positioning supplies the scroll stage without pinning
+the rest of the page. The existing Lenis provider forwards scroll updates.
+
+The preview uses the same editable Elsewhere document as the demo. On narrow
+screens, the transition distance is shorter.
+Reduced-motion preferences show the intro and preview in normal flow. That same
+static layout is the fallback if the animation module cannot load. Cleanup
+reverts the scoped animations when leaving the page or changing motion settings.
+The homepage navbar stays hidden over the opening scene and appears when the
+card finishes forming, sliding down with a brief initial blur; scrolling back hides it. Other pages retain their
+sticky header. Navigation remains available with reduced motion or if animation
+loading fails. The hero uses the existing landing copy, font, and shared buttons;
+the remaining sections and gradient footer wordmark stay shared.
+
+A compact, single-row **Powered by** logo marquee follows the animated card.
+It identifies Figart's technology stack, not customers or sponsors. Original SVG
+wordmarks are stored locally with [source credits](licenses/brand-assets.md).
+The CSS animation pauses off-screen, on hover, or through its pause control;
+reduced motion shows a static logo grid.
+
+An editorial introduction follows the marquee, outlining the path from
+frames to refinement and export. The feature tabs follow this introduction,
+before the starter showcase and the remaining landing sections.
 
 ## Editor and dashboard
 
@@ -140,18 +169,18 @@ useful for precise vector editing.
 
 ## Project structure
 
-| Location                        | Responsibility                                                                                      |
-| ------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `app/page.tsx`                  | Composes the landing sections and website structured data                                           |
-| `components/landing/`           | Separate hero, features, workflows, FAQ, and get-started sections; shared layout and demo previews  |
-| `components/common/`            | Public header and footer                                                                            |
-| `components/site/`, `lib/site/` | Marketing pages, article catalog, navigation, metadata, and canonical origin                        |
-| `components/design/`            | Dashboard, editor, SVG canvas, toolbar, panels, responsive drawers, dialogs, and editing hook       |
-| `lib/design/`                   | Document model, hierarchy, layout, vector helpers, frame queue, storage, file creation, and starter |
-| `convex/`                       | Schema, authentication configuration, and owner-checked queries/mutations                           |
-| `tests/`                        | Node tests for document invariants, persistence, interactions, and site routes                      |
-| `public/demo/`, `public/fonts/` | Demo photographs and local display font                                                             |
-| `licenses/`                     | Attribution and third-party license notices                                                         |
+| Location                        | Responsibility                                                                                                         |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `app/page.tsx`                  | Composes the landing sections and website structured data                                                              |
+| `components/landing/`           | Separate hero, features, starter, workflows, workspace, FAQ, and get-started sections; shared layout and demo previews |
+| `components/common/`            | Public header and footer                                                                                               |
+| `components/site/`, `lib/site/` | Marketing pages, article catalog, navigation, metadata, and canonical origin                                           |
+| `components/design/`            | Dashboard, editor, SVG canvas, toolbar, panels, responsive drawers, dialogs, and editing hook                          |
+| `lib/design/`                   | Document model, hierarchy, layout, vector helpers, frame queue, storage, file creation, and starter                    |
+| `convex/`                       | Schema, authentication configuration, and owner-checked queries/mutations                                              |
+| `tests/`                        | Node tests for document invariants, persistence, interactions, and site routes                                         |
+| `public/demo/`, `public/fonts/` | Demo photographs and local display font                                                                                |
+| `licenses/`                     | Attribution and third-party license notices                                                                            |
 
 Keep workspace theme variables scoped to `WorkspaceTheme`. Landing styles live
 in `components/landing/landing.module.css`. Tailwind v4 and existing shadcn
