@@ -72,7 +72,7 @@ export function FeaturesSection() {
     <section
       id="features"
       aria-labelledby="features-title"
-      className="scroll-mt-28"
+      className="scroll-mt-28 pt-20 md:pt-24"
     >
       <Eyebrow>Use cases</Eyebrow>
       <h2

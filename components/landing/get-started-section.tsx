@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export function GetStartedSection() {
@@ -5,22 +6,33 @@ export function GetStartedSection() {
     <section
       id="get-started"
       aria-labelledby="get-started-title"
-      className="mt-24 flex min-h-[350px] flex-col items-center justify-center rounded-[15px] bg-linear-to-b from-[#e7faff] via-[#d2f1f7] to-[#b6e3f2] px-6 py-16 text-center md:mt-[124px]"
+      className="relative isolate mt-24 flex min-h-[430px] flex-col items-center justify-center overflow-hidden rounded-[15px]  px-6 py-16 text-center md:mt-[124px]"
     >
+      <Image
+        src="/bluesky.png"
+        alt=""
+        fill
+        sizes="(min-width: 1440px) 1304px, 100vw"
+        className="-z-20 object-cover object-[center_72%]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-[#0b4aa3]/10 to-[#0b4aa3]/25"
+      />
       <h2
         id="get-started-title"
-        className="text-[30px] leading-[1.18] font-normal tracking-[-0.5px] md:text-[40px]"
+        className="text-[30px] leading-[1.18] font-normal tracking-[-0.5px] text-white md:text-[40px]"
       >
         Make room for your next big idea.
       </h2>
-      <p className="mt-5 max-w-[620px] text-[20px] leading-[1.45] text-[#6b807d]">
+      <p className="mt-5 max-w-[620px] text-[20px] leading-[1.45] text-white/90">
         A blank canvas, familiar tools, and a world of possibilities.
         <br className="hidden sm:block" /> Bring your ideas to life with Figart.
       </p>
       <form
         action="/sign-up"
         method="get"
-        className="mt-5 flex w-full max-w-[310px] items-center rounded-[10px] border border-[#c8dfe8] bg-white p-1 shadow-[0_1px_2px_#00000008]"
+        className="mt-6 flex w-full max-w-[340px] items-center rounded-[11px] border border-white/60 bg-white p-1 shadow-[0_8px_24px_#0a3a8040]"
       >
         <label htmlFor="landing-email" className="sr-only">
           Your email address
