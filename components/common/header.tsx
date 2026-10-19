@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -14,10 +14,22 @@ import { cn } from "@/lib/utils";
 import { marketingPaths } from "@/lib/site/navigation";
 import styles from "@/components/landing/landing.module.css";
 
+import {
+  getHeroNavigation,
+  getServerHeroNavigation,
+  subscribeHeroNavigation,
+} from "@/lib/site/hero-navigation";
+
 export default function Header() {
   const path = usePathname();
   const { isSignedIn } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const heroNavigationVisible = useSyncExternalStore(
+    subscribeHeroNavigation,
+    getHeroNavigation,
+    getServerHeroNavigation,
+  );
+  const hideForHero = path === "/" && !heroNavigationVisible;
   if (!marketingPaths.includes(path)) return null;
   const links = [
     { label: "Dashboard", href: "/dashboard" },
@@ -26,15 +38,23 @@ export default function Header() {
   ];
   return (
     <header
+      data-site-header
+      aria-hidden={hideForHero || undefined}
+      inert={hideForHero || undefined}
       className={cn(
         styles.theme,
-        "sticky top-0 z-40 border-b border-[#e9eae8] ",
+        "top-0 z-40 border-b border-[#e9eae8]",
+        path === "/" ? "fixed inset-x-0" : "sticky",
+        hideForHero
+          ? "pointer-events-none invisible -translate-y-full"
+          : "visible translate-y-0",
+        path === "/" && !hideForHero && styles.navigationEntrance,
       )}
     >
       <div
         className={cn(
           landingContainer,
-          "flex h-15 items-center justify-between  gap-3 sm:gap-5",
+          "flex h-15 items-center justify-between gap-3 sm:gap-5",
         )}
       >
         <Brand />
@@ -82,7 +102,7 @@ export default function Header() {
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="absolute inset-x-0 top-20 flex flex-col gap-1 border-b border-[#e9eae8] bg-[#fdfdfd] p-5 shadow-sm lg:hidden"
+          className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-[#e9eae8] bg-[#fdfdfd] p-5 shadow-sm lg:hidden"
         >
           {[...links, { label: "Log In", href: "/sign-in" }].map((link) => (
             <Link

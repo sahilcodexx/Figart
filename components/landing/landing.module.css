@@ -17,3 +17,27 @@
   background: var(--background);
   font-family: var(--font-landing, Arial), Arial, Helvetica, sans-serif;
 }
+
+.navigationEntrance {
+  animation: navigation-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes navigation-enter {
+  from {
+    transform: translateY(-100%);
+    filter: blur(8px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  to {
+    transform: translateY(0);
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navigationEntrance {
+    animation: none;
+  }
+}

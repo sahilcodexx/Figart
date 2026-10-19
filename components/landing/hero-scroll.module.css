@@ -1,0 +1,283 @@
+.hero {
+  position: relative;
+  background: #fdfdfd;
+}
+.viewport {
+  position: relative;
+}
+.stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  background: linear-gradient(
+    160deg,
+    #071a35 2%,
+    #124579 48%,
+    #5696bc 82%,
+    #a4c8d7 100%
+  );
+}
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.13;
+  background-image:
+    linear-gradient(#e8f3ff40 1px, transparent 1px),
+    linear-gradient(90deg, #e8f3ff40 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(transparent, #000 80%);
+}
+.intro {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 24px 110px;
+  text-align: center;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 28px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #bbd5eb;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(42px, 3.75vw, 54px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.45px;
+  text-wrap: balance;
+}
+.intro h1 > span {
+  color: #c1e3f8;
+}
+.description {
+  max-width: 620px;
+  margin-top: 27px;
+  font-size: 20px;
+  line-height: 1.45;
+  letter-spacing: -0.1px;
+  color: #d5e3ef;
+  text-wrap: balance;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.scrollHint {
+  position: absolute;
+  z-index: 3;
+  bottom: 24px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  transform: translateX(-50%);
+  color: #d3e7f0;
+}
+.scrollHint span {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.reveal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  padding: 50px 6% 60px;
+}
+.revealHeading {
+  text-align: center;
+}
+.revealHeading > span {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: #b2d0e8;
+}
+.revealHeading h2 {
+  margin-top: 10px;
+  font-size: clamp(22px, 2.6vw, 35px);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  text-wrap: balance;
+}
+.previewLink {
+  display: block;
+  width: min(100%, 1440px);
+  border-radius: 12px;
+  box-shadow: 0 25px 65px #061e3d40;
+}
+.demoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #e4f3fc;
+}
+.hero a:focus-visible {
+  outline: 2px solid #c1eeff;
+  outline-offset: 5px;
+  border-radius: 8px;
+}
+.demoAnchor {
+  position: absolute;
+  bottom: 0;
+  scroll-margin-top: 60px;
+}
+.hero[data-scroll-ready] {
+  height: 340svh;
+}
+.hero[data-scroll-ready] .viewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+.hero[data-scroll-ready] .stage {
+  height: 100%;
+}
+.hero[data-scroll-ready] .intro {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+}
+.hero[data-scroll-ready] .reveal {
+  position: absolute;
+  inset: 0;
+}
+@media (max-width: 767px) {
+  .hero[data-scroll-ready] {
+    height: 240svh;
+  }
+  .intro {
+    padding: 75px 20px 105px;
+  }
+  .eyebrow {
+    margin-bottom: 24px;
+    font-size: 12px;
+  }
+  .intro h1 {
+    font-size: 40px;
+  }
+
+  .description {
+    max-width: 340px;
+    margin-top: 24px;
+    font-size: 17px;
+  }
+  .actions {
+    gap: 8px;
+  }
+
+  .reveal {
+    gap: 22px;
+    padding-inline: 6%;
+  }
+  .revealHeading > span {
+    font-size: 7px;
+  }
+  .revealHeading h2 {
+    max-width: 250px;
+    margin-inline: auto;
+  }
+
+  .previewLink {
+    border-radius: 9px;
+  }
+  .demoLink {
+    font-size: 11px;
+  }
+}
+@media (max-height: 600px) and (min-width: 768px) {
+  .intro {
+    padding-block: 40px 65px;
+  }
+  .intro h1 {
+    font-size: 48px;
+  }
+  .eyebrow {
+    margin-bottom: 14px;
+  }
+  .description {
+    margin-top: 15px;
+  }
+  .actions {
+    margin-top: 18px;
+  }
+
+  .reveal {
+    gap: 12px;
+    padding-block: 20px;
+  }
+
+  .revealHeading h2 {
+    font-size: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scrollHint {
+    display: none;
+  }
+  .hero {
+    height: auto !important;
+  }
+  .hero .viewport {
+    position: relative !important;
+    height: auto !important;
+  }
+}
+
+.hero[data-scroll-ready] .demoAnchor {
+  top: calc(100% - 100svh + 60px);
+  bottom: auto;
+}
+
+.hero:not([data-scroll-ready]) .scrollHint {
+  display: none;
+}
+
+@media (max-height: 450px) {
+  .intro {
+    padding: 20px 20px 32px;
+  }
+  .intro h1 {
+    font-size: 38px;
+  }
+  .eyebrow {
+    margin-bottom: 12px;
+    font-size: 8px;
+  }
+  .description,
+  .revealHeading {
+    display: none;
+  }
+  .actions {
+    margin-top: 16px;
+  }
+  .reveal {
+    gap: 12px;
+    padding-block: 12px;
+  }
+  .scrollHint {
+    bottom: 12px;
+    gap: 5px;
+  }
+}
